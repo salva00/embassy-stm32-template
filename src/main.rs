@@ -1,26 +1,31 @@
 #![no_std]
 #![no_main]
 
+use defmt::*;
 use embassy_executor::Spawner;
+use embassy_stm32::gpio::{Level, Output, Speed};
 use embassy_time::{Duration, Timer};
 use {defmt_rtt as _, panic_probe as _};
 
+
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {
-    {% if chip contains "nrf" -%}
-    let _p = embassy_nrf::init(Default::default());
-    {% endif -%}
+
 
     {% if chip contains "stm32" -%}
-    let _p = embassy_stm32::init(Default::default());
+    let p = embassy_stm32::init(Default::default());
     {% endif -%}
 
-    {% if chip contains "rp2040" -%}
-    let _p = embassy_rp::init(Default::default());
+    {% if chip contains "stm32f4" -%}
+    let mut led: Output<'_> = Output::new(p.PA5, Level::High, Speed::Low);
     {% endif -%}
+
 
     loop {
         defmt::info!("Blink");
-        Timer::after(Duration::from_millis(100)).await;
+        led.set_high();
+        Timer::after_millis(300).await;
+        led.set_low();
+        Timer::after_millis(300).await;
     }
 }
