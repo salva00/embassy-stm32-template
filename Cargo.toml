@@ -41,8 +41,3 @@ chrono = { version = "^0.4", default-features = false}
 
 [profile.release]
 debug = 2
-
-
-
-[profile.release]
-debug = 2
