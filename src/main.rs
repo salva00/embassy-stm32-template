@@ -17,7 +17,7 @@ async fn main(_spawner: Spawner) {
     {% endif -%}
 
     {% if chip contains "stm32f4" -%}
-    let mut led: Output<'_> = Output::new(p.PA5, Level::High, Speed::Low);
+    let mut led = Output::new(p.PA5, Level::High, Speed::Low);
     {% endif -%}
 
 
