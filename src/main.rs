@@ -4,7 +4,7 @@
 use defmt::*;
 use embassy_executor::Spawner;
 use embassy_stm32::gpio::{Level, Output, Speed};
-use embassy_time::{Duration, Timer};
+use embassy_time::Timer;
 use {defmt_rtt as _, panic_probe as _};
 
 
@@ -16,8 +16,10 @@ async fn main(_spawner: Spawner) {
     let p = embassy_stm32::init(Default::default());
     {% endif -%}
 
-    {% if chip contains "stm32f4" -%}
+    {% if chip contains "stm32f401" -%}
     let mut led = Output::new(p.PA5, Level::High, Speed::Low);
+    {% else if chip contains "stm32h7" -%}
+    let mut led = Output::new(p.PB14, Level::High, Speed::Low);
     {% endif -%}
 
 
